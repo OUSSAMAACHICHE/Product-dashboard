@@ -3,6 +3,10 @@
 A simple React dashboard application for managing products.  
 You can add, view, and (optionally) edit or delete products. All data is stored in your browser’s localStorage.
 
+## Live Demo
+
+[Product-dashboard-link](https://product-dashboard-with-react.netlify.app/)
+
 ## Features
 
 - **Dashboard View:**  
