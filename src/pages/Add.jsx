@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AlertContext } from "../context/AlertContext";
+import { CategoryContext } from "../context/CategoriesContext";
+
 
 const Add = () => {
+  const { showAlertMsg } = useContext(AlertContext);
+  const categories = useContext(CategoryContext);
+  
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     productName: "",
@@ -11,7 +17,6 @@ const Add = () => {
     productImage: "",
   });
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   // Handle input changes
   const handleChange = (e) => {
@@ -25,10 +30,12 @@ const Add = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
 
     // Validation
-    if (isNaN(Number(formData.productPrice)) || Number(formData.productPrice) <= 0) {
+    if (
+      isNaN(Number(formData.productPrice)) ||
+      Number(formData.productPrice) <= 0
+    ) {
       setError("Please enter a valid price.");
       return;
     }
@@ -44,7 +51,7 @@ const Add = () => {
     // Save to localStorage
     localStorage.setItem("products", JSON.stringify(updatedProducts));
 
-    setSuccess("Product added successfully!");
+    showAlertMsg("Product added successfully!")
     setFormData({
       productName: "",
       productPrice: "",
@@ -52,11 +59,11 @@ const Add = () => {
       productDescription: "",
       productImage: "",
     });
-    setTimeout(() => navigate("/"), 1000);
+    navigate("/");
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-green-500 text-white">
+    <div className="flex flex-col items-center justify-center h-[calc(100vh-4rem)] bg-gradient-to-r from-blue-500 to-green-500 text-white">
       <h1 className="text-3xl font-bold mb-6 text-white drop-shadow">
         Add Product
       </h1>
@@ -94,24 +101,18 @@ const Add = () => {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label
-            htmlFor="productCategory"
-            className="text-gray-700 font-semibold"
-          >
-            Category
-          </label>
-          <input
-            value={formData.productCategory}
-            onChange={handleChange}
-            type="text"
-            id="productCategory"
-            name="productCategory"
-            required
-            className="px-4 py-2 text-gray-900 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          />
+          <select onChange={handleChange} value={formData.productCategory} name="productCategory"  className="bg-white block py-2 mt-2 rounded-md border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <option value="" disabled>Choose Category</option>
+            {categories.map((cat) => {
+              return <option key={cat.id} value={cat.name}>{cat.name}</option>
+            })}
+          </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label htmlFor="productDescription" className="text-gray-700 font-semibold">
+          <label
+            htmlFor="productDescription"
+            className="text-gray-700 font-semibold"
+          >
             Description
           </label>
           <textarea
@@ -139,7 +140,6 @@ const Add = () => {
           />
         </div>
         {error && <div className="text-red-600 text-sm">{error}</div>}
-        {success && <div className="text-green-600 text-sm">{success}</div>}
         <button
           type="submit"
           className="mt-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-md hover:from-indigo-600 hover:to-purple-700 transition-colors duration-300 shadow"

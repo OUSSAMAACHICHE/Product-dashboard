@@ -1,8 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import defaultImage from "../assets/images.png"; // Default image path
+import { useContext } from "react";
+import { CategoryContext } from "../context/CategoriesContext";
 
-const ProductCard = ({ product, setProducts }) => {
+
+const ProductCard = ({ product, setAllProducts }) => {
   const [imgError, setImgError] = useState(false);
+  const categories = useContext(CategoryContext);
+
+
+  const navigate = useNavigate();
 
   const handleDelete = () => {
     // Retrieve existing products from localStorage
@@ -17,7 +25,7 @@ const ProductCard = ({ product, setProducts }) => {
     localStorage.setItem("products", JSON.stringify(updatedProducts));
 
     // Update the state to reflect the changes
-    setProducts(updatedProducts);
+    setAllProducts(updatedProducts);
   };
 
   // Format price as currency
@@ -29,8 +37,18 @@ const ProductCard = ({ product, setProducts }) => {
     });
   };
 
+  const handleEdit = () => {
+    // Navigate to the edit page with the product ID
+    const editUrl = `/edit/${product.productId}`;
+    navigate(editUrl);
+  };
+
+  const categoryIcon = categories.find((cat) => {
+    return cat.name === product.productCategory;
+  })
   return (
     <div className="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
+
       <img
         src={
           imgError || !product.productImage
@@ -45,7 +63,7 @@ const ProductCard = ({ product, setProducts }) => {
         {product.productName}
       </h3>
       <p className="text-gray-600">{formatPrice(product.productPrice)}</p>
-      <p className="text-sm text-gray-500">{product.productCategory}</p>
+      <p className="text-sm text-gray-500 flex items-center gap-1"><span>{categoryIcon.icon}</span>{product.productCategory}</p>
       <p className="text-gray-700 mt-2 flex-1">{product.productDescription}</p>
       <div className="flex flex-wrap gap-2 mt-4">
         <button
@@ -62,6 +80,7 @@ const ProductCard = ({ product, setProducts }) => {
           Delete
         </button>
         <button
+          onClick={handleEdit}
           className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition-colors duration-300"
           aria-label="Edit Product"
         >
