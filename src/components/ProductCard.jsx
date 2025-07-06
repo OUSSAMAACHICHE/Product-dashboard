@@ -63,7 +63,7 @@ const ProductCard = ({ product, setAllProducts }) => {
         {product.productName}
       </h3>
       <p className="text-gray-600">{formatPrice(product.productPrice)}</p>
-      <p className="text-sm text-gray-500 flex items-center gap-1"><span>{categoryIcon.icon}</span>{product.productCategory}</p>
+      <p className="text-sm text-gray-500 flex items-center gap-1"><span>{categoryIcon ? categoryIcon.icon : null}</span>{product.productCategory}</p>
       <p className="text-gray-700 mt-2 flex-1">{product.productDescription}</p>
       <div className="flex flex-wrap gap-2 mt-4">
         <button
