@@ -1,44 +1,37 @@
 import ProductCard from "../components/ProductCard";
+import Pagination from "../components/Pagination";
 import { useState, useEffect, useMemo, useContext } from "react";
 import { CategoryContext } from "../context/CategoriesContext";
 
+// hooks
+import { useProducts } from "../hooks/useProducts";
+import { useFilteredProducts } from "../hooks/useFilteredProducts";
 const itemsPerPage = 4;
 
 const Dashboard = () => {
   // State for all products, search term, selected category, and current page
-  const [allProducts, setAllProducts] = useState([]);
+  const [allProducts, setAllProducts] = useProducts();
   const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState(() => {
+    return localStorage.getItem("category") || "All";
+  });
   const [currentPage, setCurrentPage] = useState(1);
 
+  useEffect(() => {
+    localStorage.setItem("category", category);
+  }, [category]);
+
+  const filteredProducts = useFilteredProducts(
+    allProducts,
+    searchTerm,
+    category
+  );
   // Get categories from context
   const categories = useContext(CategoryContext);
 
   useEffect(() => {
-    // Fetch products from localStorage on component mount
-    const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
-    setAllProducts(storedProducts);
-  }, []);
-
-  useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm,category])
-
-  // Filter products based on search term and selected category
-  const filteredProducts = useMemo(() => {
-    let filtered = allProducts;
-    if (searchTerm) {
-      filtered = filtered.filter((product) =>
-        product.productName.toLowerCase().includes(searchTerm)
-      );
-    }
-    if (category && category !== "All") {
-      filtered = filtered.filter(
-        (product) => product.productCategory === category
-      );
-    }
-    return filtered;
-  }, [allProducts, searchTerm, category]);
+  }, [searchTerm, category]);
 
   // Handle search input change
   const handleSearch = (event) => {
@@ -62,7 +55,7 @@ const Dashboard = () => {
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   return (
-    <main className="flex flex-col items-center min-h-[calc(100vh-4rem)]  bg-gradient-to-r from-blue-500 to-green-500 text-white px-2 sm:px-6 py-6">
+    <main className="flex flex-col items-center min-h-[calc(100vh-4rem)]  bg-gradient-to-r from-blue-500 to-green-500 dark:from-slate-950 dark:to-slate-900 text-white px-2 sm:px-6 py-6">
       <h1 className="text-3xl font-bold text-white text-center">Dashboard</h1>
       <p className="mt-4 text-lg text-center">Welcome to the Dashboard!</p>
       <div className="w-full max-w-7xl">
@@ -72,7 +65,7 @@ const Dashboard = () => {
             onChange={handleSearch}
             type="search"
             aria-label="Search products"
-            className="block w-full mt-2 px-4 py-2 rounded-md border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition bg-white placeholder-gray-400"
+            className="block w-full mt-2 px-4 py-2 rounded-md border border-gray-300 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 transition bg-white dark:bg-slate-800 placeholder-gray-400"
             placeholder="Search products..."
           />
           {/* Category dropdown */}
@@ -80,15 +73,14 @@ const Dashboard = () => {
             value={category}
             onChange={handleCategoryChange}
             aria-label="categorySelect"
-            className="bg-white block py-2 mt-2 rounded-md border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="bg-white dark:bg-slate-800 block py-2 mt-2 rounded-md border border-gray-300 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
           >
             <option value="All">All</option>
             {categories.map((cat) => (
-                <option key={cat.id} value={cat.name}>
-                  {cat.name}
-                </option>
-              )
-            )}
+              <option key={cat.id} value={cat.name}>
+                {cat.name}
+              </option>
+            ))}
           </select>
         </div>
         {/* Show message if no products are available */}
@@ -106,48 +98,18 @@ const Dashboard = () => {
                 <ProductCard
                   key={product.productId}
                   product={product}
-                  setAllProducts={setAllProducts}
                   categories={categories}
+                  setAllProducts={setAllProducts}
                 />
               ))}
             </section>
             {/* Pagination controls */}
             {totalPages > 1 && (
-
-            <div className="flex justify-center gap-2 mt-4">
-              {/* Previous page button */}
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-                className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50 cursor-pointer"
-              >
-                Prev
-              </button>
-              {/* Page number buttons */}
-              {[...Array(totalPages)].map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentPage(idx + 1)}
-                  className={`px-3 py-1 rounded cursor-pointer ${
-                    currentPage === idx + 1
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-gray-700"
-                  }`}
-                >
-                  {idx + 1}
-                </button>
-              ))}
-              {/* Next page button */}
-              <button
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(p + 1, totalPages))
-                }
-                disabled={currentPage === totalPages}
-                className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50 cursor-pointer"
-              >
-                Next
-              </button>
-            </div>
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
             )}
           </>
         )}

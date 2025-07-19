@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import Add from "./pages/Add";
 import Edit from "./pages/Edit";
 import NotFound from "./pages/NotFound";
+import ProductDetails from "./pages/ProductDetails";
 
 import Navbar from "./components/Navbar";
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/add" element={<Add />} />
           <Route path="/edit/:id" element={<Edit />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="product/:id/" element={<ProductDetails />} />
         </Routes>
       
     </>

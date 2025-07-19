@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-
 // Context
 import { useContext } from "react";
 import { AlertContext } from "../context/AlertContext";
 import { CategoryContext } from "../context/CategoriesContext";
 
-
 const Edit = () => {
-  const {showAlertMsg} = useContext(AlertContext)
+  const { showAlertMsg } = useContext(AlertContext);
   const categories = useContext(CategoryContext);
   const navigate = useNavigate();
   // Get the product ID from the URL parameters
@@ -62,23 +60,22 @@ const Edit = () => {
       showAlertMsg("Product updated successfully!");
       navigate("/");
     } else {
-      navigate("*")
+      navigate("*");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[calc(100vh-4rem)] bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+    <div className="flex flex-col items-center justify-center h-[calc(100vh-4rem)] bg-gradient-to-r from-purple-500 to-pink-500 dark:from-slate-950 dark:to-slate-900 text-white">
       <h1 className="text-3xl font-bold mb-4">Edit Page</h1>
-      
 
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg"
+        className="w-full max-w-md p-6 bg-white dark:bg-slate-800 rounded-lg shadow-lg"
       >
         <div className="mb-4">
           <label
             htmlFor="productName"
-            className="block text-gray-700 font-semibold mb-2"
+            className="block text-gray-700 dark:text-white font-semibold mb-2"
           >
             Product Name
           </label>
@@ -89,13 +86,13 @@ const Edit = () => {
             id="productName"
             name="productName"
             required
-            className="w-full px-4 py-2 text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+            className="w-full px-4 py-2 text-gray-900 dark:text-white dark:bg-slate-950 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
           />
         </div>
         <div className="mb-4">
           <label
             htmlFor="productPrice"
-            className="block text-gray-700 font-semibold mb-2"
+            className="block text-gray-700 dark:text-white font-semibold mb-2"
           >
             Price
           </label>
@@ -107,20 +104,25 @@ const Edit = () => {
             name="productPrice"
             min="0"
             required
-            className="w-full px-4 py-2 text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+            className="w-full px-4 py-2 text-gray-900 dark:text-white dark:bg-slate-950 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
           />
         </div>
         <div className="mb-4">
-         <select name="productCategory" value={product.productCategory} onChange={handleChange} className="bg-white block py-2 mt-2 rounded-md border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          {categories.map((cat) => {
-            return <option key={cat.id}>{cat.name}</option>
-          })}
-         </select>
+          <select
+            name="productCategory"
+            value={product.productCategory}
+            onChange={handleChange}
+            className="bg-white block py-2 mt-2 rounded-md border border-gray-300 text-gray-900 dark:text-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          >
+            {categories.map((cat) => {
+              return <option key={cat.id}>{cat.name}</option>;
+            })}
+          </select>
         </div>
         <div className="mb-4">
           <label
             htmlFor="productDescription"
-            className="block text-gray-700 font-semibold mb-2"
+            className="block text-gray-700 dark:text-white font-semibold mb-2"
           >
             Description
           </label>
@@ -131,24 +133,23 @@ const Edit = () => {
             name="productDescription"
             rows="3"
             required
-            className="w-full px-4 py-2 text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+            className="w-full px-4 py-2 text-gray-900 dark:text-white dark:bg-slate-950 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
           ></textarea>
         </div>
         <div className="flex gap-1">
-        <button
-          type="submit"
-          className="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition"
-        >
-          Update Product
-        </button>
-        <button
-          type="button"
-          onClick={() => navigate("/")}
-          className="w-full bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
-        >
-          Cancel
-        </button>
-
+          <button
+            type="submit"
+            className="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition"
+          >
+            Update Product
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="w-full bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </div>

@@ -30,6 +30,14 @@ You can add, view, edit, or delete products. All data is stored in your browserâ
   Styled with Tailwind CSS and includes a gradient navbar.
 - **LocalStorage Persistence:**  
   All products are saved in your browser and persist across reloads.
+- **Product details page** 
+  Show all the product details
+- **Confirm deleting**
+  Show Modal to confirm deleting
+- **Save category result**
+  Save category when reloading the page
+- **Dark mode**
+  Dark and light mode with localStorage 
 
 ## Getting Started
 
