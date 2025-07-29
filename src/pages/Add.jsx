@@ -34,7 +34,6 @@ const Add = () => {
   const file = e.target.files[0];
   if (file) {
     const reader = new FileReader();
-    console.log(reader)
     reader.onloadend = () => {
       setFormData((prevData) => ({
         ...prevData,
