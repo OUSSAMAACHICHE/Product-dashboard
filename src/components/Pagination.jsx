@@ -1,3 +1,7 @@
+// Lucide icons
+import { ArrowBigRight, ArrowBigLeft } from 'lucide-react';
+
+
 const Pagination = ({ totalPages, currentPage, setCurrentPage }) => (
   <div className="flex justify-center gap-2 mt-4">
     <button
@@ -5,7 +9,7 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }) => (
       disabled={currentPage === 1}
       className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50 cursor-pointer"
     >
-      Prev
+      <ArrowBigLeft/>
     </button>
     {[...Array(totalPages)].map((_, idx) => (
       <button
@@ -25,7 +29,7 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }) => (
       disabled={currentPage === totalPages}
       className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50 cursor-pointer"
     >
-      Next
+      <ArrowBigRight/>
     </button>
   </div>
 );

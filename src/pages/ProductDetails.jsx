@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
+// Lucide icons
+import { ReceiptText } from 'lucide-react';
+
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState();
@@ -15,8 +18,8 @@ const ProductDetails = () => {
 
   return (
     <section className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] bg-gradient-to-r from-orange-500 to-yellow-500 dark:from-slate-950 dark:to-slate-900 text-white px-4 py-8">
-      <h1 className="text-4xl font-extrabold mb-10 text-white drop-shadow-lg tracking-wide">
-        Product Details
+      <h1 className="text-4xl font-extrabold mb-10 text-white drop-shadow-lg tracking-wide flex items-center">
+        <ReceiptText />Product Details
       </h1>
       <div className="flex flex-col md:flex-row bg-white/80 dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden max-w-4xl w-full">
         {/* Image */}

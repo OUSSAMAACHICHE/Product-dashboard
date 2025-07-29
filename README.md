@@ -38,6 +38,8 @@ You can add, view, edit, or delete products. All data is stored in your browserâ
   Save category when reloading the page
 - **Dark mode**
   Dark and light mode with localStorage 
+- **Add images**
+  You can add images directly from your device
 
 ## Getting Started
 
@@ -65,6 +67,13 @@ You can add, view, edit, or delete products. All data is stored in your browserâ
 
 - You can change the default image in `src/assets/images.png`.
 - To reset all products, clear your browserâ€™s localStorage.
+
+## Technologies used 
+- react 
+- tailwindcss
+- lucide library
+- vite
+- react-router-dom
 
 ## License
 

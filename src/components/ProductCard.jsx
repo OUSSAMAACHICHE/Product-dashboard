@@ -18,7 +18,7 @@ const ProductCard = ({ product, setAllProducts }) => {
   const handleDelete = () => {
     setOpenDialog(true);
   };
-
+  
   const handleConfirmDelete = () => {
     // Retrieve existing products from localStorage
     const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
@@ -56,6 +56,7 @@ const ProductCard = ({ product, setAllProducts }) => {
   const categoryIcon = categories.find((cat) => {
     return cat.name === product.productCategory;
   });
+
   return (
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
       <ConfirmDeleteDialog
@@ -70,7 +71,7 @@ const ProductCard = ({ product, setAllProducts }) => {
             : product.productImage
         }
         alt={product.productName || "Product"}
-        className="w-full h-48 object-cover mb-4 rounded-md"
+        className="w-full h-48 object-cover mb-4 rounded-md transform hover:scale-110 transition-transform duration-300"
         onError={() => setImgError(true)}
       />
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">

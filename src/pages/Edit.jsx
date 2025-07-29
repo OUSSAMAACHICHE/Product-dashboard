@@ -6,6 +6,9 @@ import { useContext } from "react";
 import { AlertContext } from "../context/AlertContext";
 import { CategoryContext } from "../context/CategoriesContext";
 
+// Lucide icons 
+import { UserRoundPen } from 'lucide-react';
+
 const Edit = () => {
   const { showAlertMsg } = useContext(AlertContext);
   const categories = useContext(CategoryContext);
@@ -52,6 +55,7 @@ const Edit = () => {
     }
 
     const products = JSON.parse(localStorage.getItem("products")) || [];
+    // Find the product index 
     const index = products.findIndex((p) => p.productId === id);
 
     if (index !== -1) {
@@ -66,7 +70,7 @@ const Edit = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-[calc(100vh-4rem)] bg-gradient-to-r from-purple-500 to-pink-500 dark:from-slate-950 dark:to-slate-900 text-white">
-      <h1 className="text-3xl font-bold mb-4">Edit Page</h1>
+      <h1 className="text-3xl font-bold mb-4 flex items-center"><UserRoundPen />Edit Page</h1>
 
       <form
         onSubmit={handleSubmit}

@@ -3,10 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { AlertContext } from "../context/AlertContext";
 import { CategoryContext } from "../context/CategoriesContext";
 
+// Lucide icons
+import { BadgePlus } from 'lucide-react';
+
+
 const Add = () => {
   const { showAlertMsg } = useContext(AlertContext);
   const categories = useContext(CategoryContext);
-
+  const [error, setError] = useState("");
+  
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     productName: "",
@@ -15,7 +20,6 @@ const Add = () => {
     productDescription: "",
     productImage: "",
   });
-  const [error, setError] = useState("");
 
   // Handle input changes
   const handleChange = (e) => {
@@ -26,22 +30,43 @@ const Add = () => {
     }));
   };
 
+  const handleImgChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    console.log(reader)
+    reader.onloadend = () => {
+      setFormData((prevData) => ({
+        ...prevData,
+        productImage: reader.result, // Base64 string
+      }));
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
     // Validation
+     // Check if there's no name added
+    if(!formData.productName.trim()) return setError("Please enter your name.");
+    // Check if the price is not valid
     if (
       isNaN(Number(formData.productPrice)) ||
-      Number(formData.productPrice) <= 0
+      Number(formData.productPrice) <= 0 || 
+      (!formData.productPrice)
     ) {
       setError("Please enter a valid price.");
       return;
     }
+    // Check if there's no image added
     if (!formData.productImage.trim()) {
       formData.productImage = "../assets/images.png"; // Default image if none provided
     }
-
+   
     // Get existing products from localStorage or start with an empty array
     const existingProducts = JSON.parse(localStorage.getItem("products")) || [];
     // Add the new product
@@ -49,6 +74,7 @@ const Add = () => {
     const updatedProducts = [...existingProducts, newProduct];
     // Save to localStorage
     localStorage.setItem("products", JSON.stringify(updatedProducts));
+
 
     showAlertMsg("Product added successfully!");
     setFormData({
@@ -63,8 +89,8 @@ const Add = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-[calc(100vh-4rem)] bg-gradient-to-r from-blue-500 to-green-500 dark:from-slate-950 dark:to-slate-900 text-white">
-      <h1 className="text-3xl font-bold mb-6 text-white drop-shadow">
-        Add Product
+      <h1 className="text-3xl font-bold mb-6 text-white drop-shadow flex items-center">
+        <BadgePlus /> Add Product
       </h1>
       <form
         onSubmit={handleSubmit}
@@ -150,9 +176,9 @@ const Add = () => {
             Image URL
           </label>
           <input
-            value={formData.productImage}
-            onChange={handleChange}
-            type="text"
+            onChange={handleImgChange}
+            accept="image/*"
+            type="file"
             id="productImage"
             name="productImage"
             placeholder="Optional: Enter image URL"

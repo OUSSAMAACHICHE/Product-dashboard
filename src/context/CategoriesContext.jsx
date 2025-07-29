@@ -25,4 +25,4 @@ const categories = [
 
 const CategoryContext = createContext(categories);
 
-export { categories, CategoryContext };
+export { CategoryContext, categories };

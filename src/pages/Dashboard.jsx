@@ -1,8 +1,11 @@
 import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
 import { useState, useEffect, useMemo, useContext } from "react";
+// Context
 import { CategoryContext } from "../context/CategoriesContext";
 
+// Lucide icons
+import { LayoutDashboard } from "lucide-react";
 // hooks
 import { useProducts } from "../hooks/useProducts";
 import { useFilteredProducts } from "../hooks/useFilteredProducts";
@@ -29,6 +32,7 @@ const Dashboard = () => {
   // Get categories from context
   const categories = useContext(CategoryContext);
 
+  // Return to the first page
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, category]);
@@ -56,7 +60,7 @@ const Dashboard = () => {
 
   return (
     <main className="flex flex-col items-center min-h-[calc(100vh-4rem)]  bg-gradient-to-r from-blue-500 to-green-500 dark:from-slate-950 dark:to-slate-900 text-white px-2 sm:px-6 py-6">
-      <h1 className="text-3xl font-bold text-white text-center">Dashboard</h1>
+      <h1 className="text-3xl font-bold text-white text-center flex items-center"><LayoutDashboard />Dashboard </h1>
       <p className="mt-4 text-lg text-center">Welcome to the Dashboard!</p>
       <div className="w-full max-w-7xl">
         <div className="flex items-center justify-center gap-2">
